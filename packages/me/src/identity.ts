@@ -2,6 +2,7 @@ import { isAddress, type Address } from 'viem';
 import type { MeNetworkConfig } from './config.js';
 import { ME_SDK_REVISION, MeConfigurationError } from './config.js';
 import type { FetchLike } from './rpc.js';
+import { getEvmBankAccount, cosmosResponseHeight } from './bank.js';
 
 /** Paths and enum vocabulary verified in the official SDK at this immutable revision.
  * https://github.com/openmetaearth/meta-earth-js-sdk/blob/a56f3e936396de8689c2fc8667ad7306765eee9f/src/api/identity.ts
@@ -30,12 +31,14 @@ function parseInfo(response: unknown): MeIdentityRecord | null {
   return { did: info.did, address: info.address, pubkey: info.pubkey, status, kycLevel: level, subAccount };
 }
 
-async function query(config: MeNetworkConfig, path: string, parameter: string, value: string, fetchImpl: FetchLike): Promise<MeIdentityRecord | null> {
+async function query(config: MeNetworkConfig, path: string, parameter: string, value: string, fetchImpl: FetchLike, height?: bigint): Promise<MeIdentityRecord | null> {
   if (!config.cosmosRestUrl) throw new MeConfigurationError('ME_COSMOS_REST_URL is required for ME ID reads');
   if (!value || value.length > 512) throw new MeIdentityProtocolError('Invalid identity query input');
   const url = new URL(`${config.cosmosRestUrl}${path}`);
   url.searchParams.set(parameter, value);
-  const response = await fetchImpl(url, { method: 'GET', headers: { accept: 'application/json' }, signal: AbortSignal.timeout(8_000), redirect: 'error' });
+  const headers: Record<string, string> = { accept: 'application/json' };
+  if (height !== undefined) headers['x-cosmos-block-height'] = height.toString();
+  const response = await fetchImpl(url, { method: 'GET', headers, signal: AbortSignal.timeout(15_000), redirect: 'error' });
   const text = await response.text();
   if (text.length > 1_000_000) throw new MeIdentityProtocolError('ME identity response exceeds size limit');
   let body: unknown;
@@ -46,6 +49,7 @@ async function query(config: MeNetworkConfig, path: string, parameter: string, v
     if (message.includes('DID not found') || message.includes('failed to get DID by sub-account')) return null;
     throw new MeIdentityProtocolError(`ME identity HTTP ${response.status}`);
   }
+  if (height !== undefined && cosmosResponseHeight(response.headers) !== height) throw new MeIdentityProtocolError('ME identity response did not confirm the requested historical height');
   return parseInfo(body);
 }
 export const getMeIdByAddress = (config: MeNetworkConfig, address: string, fetchImpl: FetchLike = fetch) => query(config, '/metaearth/did/did', 'address', address, fetchImpl);
@@ -59,9 +63,13 @@ export const getMeIdBySubAccount = (config: MeNetworkConfig, subAccount: string,
 export async function verifyMeIdentityForWallet(config: MeNetworkConfig, wallet: Address, fetchImpl: FetchLike = fetch) {
   if (!isAddress(wallet)) throw new MeIdentityRejectedError('Invalid EVM wallet');
   if (config.minimumKycLevel === undefined || !config.identityPolicyReference) throw new MeConfigurationError('Official KYC level mapping and ME_ID_POLICY_REFERENCE are required before admission');
-  const sub = await getMeIdBySubAccount(config, wallet, fetchImpl);
-  if (!sub || sub.status !== 1 || sub.kycLevel < config.minimumKycLevel || sub.subAccount.toLowerCase() !== wallet.toLowerCase()) throw new MeIdentityRejectedError('ME identity does not satisfy the configured wallet/active/KYC policy');
-  const main = await getMeIdByAddress(config, sub.address, fetchImpl);
-  if (!main || main.did !== sub.did || main.address !== sub.address || main.pubkey !== sub.pubkey || main.subAccount.toLowerCase() !== wallet.toLowerCase() || main.status !== 1 || main.kycLevel !== sub.kycLevel) throw new MeIdentityRejectedError('ME main/sub-account binding could not be consistently verified');
-  return { canonicalDid: main.did, mainAddress: main.address, wallet, kycLevel: main.kycLevel, observedAt: new Date().toISOString(), policyReference: config.identityPolicyReference, sourceRevision: IDENTITY_SOURCE_REVISION };
+  // Live keeper keys sub-account DID records by Bech32 account, NOT a 0x string.
+  // Query the official CosmosAccount route first, then verify the actual DID binding.
+  const mapping = await getEvmBankAccount(config, wallet, { fetchImpl });
+  if (mapping.observedHeight === undefined) throw new MeIdentityProtocolError('ME account mapping did not confirm its observed height');
+  const sub = await query(config, '/metaearth/kyc/QuerySubAccountDidResponse', 'sub_account', mapping.bankAddress, fetchImpl, mapping.observedHeight);
+  if (!sub || sub.status !== 1 || sub.kycLevel < config.minimumKycLevel || sub.subAccount !== mapping.bankAddress) throw new MeIdentityRejectedError('ME identity does not satisfy the configured wallet/active/KYC policy');
+  const main = await query(config, '/metaearth/did/did', 'address', sub.address, fetchImpl, mapping.observedHeight);
+  if (!main || main.did !== sub.did || main.address !== sub.address || main.pubkey !== sub.pubkey || main.subAccount !== mapping.bankAddress || main.status !== 1 || main.kycLevel !== sub.kycLevel) throw new MeIdentityRejectedError('ME main/sub-account binding could not be consistently verified');
+  return { canonicalDid: main.did, mainAddress: main.address, bankAddress: mapping.bankAddress, wallet, kycLevel: main.kycLevel, observedBlock: mapping.observedHeight.toString(), observedAt: new Date().toISOString(), policyReference: config.identityPolicyReference, sourceRevision: IDENTITY_SOURCE_REVISION };
 }

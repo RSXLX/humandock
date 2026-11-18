@@ -12,11 +12,11 @@ export const DEMO_USERS: Record<string, User> = {
 };
 const iso = (time: number) => new Date(time).toISOString();
 export function record(task: PrivateTask, user: User, type: string, label: string, now: number) {
-  task.timeline.push({ id: randomUUID(), type, label, at: iso(now), actorId: user.id, executionMode: 'demo' });
+  task.timeline.push({ id: randomUUID(), type, label, at: iso(now), actorId: user.id, executionMode: task.executionMode });
   task.updatedAt = iso(now); task.version++;
 }
 export function canRead(task: PrivateTask, user: User) {
-  return task.orgId === user.orgId || (user.id === task.reviewerId && task.status !== 'DRAFT');
+  return task.buyerId === user.id || task.orgId === user.orgId || (user.id === task.reviewerId && task.status !== 'DRAFT');
 }
 export function assertRead(task: PrivateTask, user: User) {
   requireThat(canRead(task, user), 'NOT_FOUND', 'Task not found.', 404);
@@ -27,17 +27,17 @@ export function assertBuyer(task: PrivateTask, user: User) {
 export function expected(task: PrivateTask, version: number) {
   requireThat(task.version === version, 'VERSION_CONFLICT', 'Task changed. Refresh and review the current state.');
 }
-export function createTask(user: User, input: { title: string; sourceText: string; facts: string; channel: string; locale: 'en-US' }, now: number): PrivateTask {
+export function createTask(user: User, input: { title: string; sourceText: string; facts: string; channel: string; locale: 'en-US' }, now: number, options: { executionMode?: 'demo' | 'me'; reviewerId?: string } = {}): PrivateTask {
   requireThat(user.role !== 'reviewer', 'BUYER_REQUIRED', 'Use a brand account to create a task.', 403);
   const id = randomUUID(), versionId = randomUUID();
   const sourceManifest = { schemaVersion: 'source.v1', taskId: id, versionId, sourceHash: textHash(input.sourceText), factsHash: textHash(input.facts), locale: input.locale, channel: input.channel, rubric: 'ad-review.v1' };
-  const task: PrivateTask = { ...input, id, orgId: user.orgId, buyerId: user.id, reviewerId: DEMO_REVIEWER_ID, status: 'DRAFT', version: 0,
+  const task: PrivateTask = { ...input, id, orgId: user.orgId, buyerId: user.id, reviewerId: options.reviewerId ?? DEMO_REVIEWER_ID, status: 'DRAFT', version: 0,
     sourceVersionId: versionId, currentVersionId: versionId, sourceCommitment: null,
     versions: [{ id: versionId, text: input.sourceText, contentHash: textHash(input.sourceText), createdAt: iso(now) }],
     quote: null, report: null, approval: null, createdAt: iso(now), updatedAt: iso(now), acceptedAt: null, deliveryDue: null,
-    challengeUntil: null, arbitrationUntil: null, closureReason: null, disputeReason: null, timeline: [], executionMode: 'demo',
+    challengeUntil: null, arbitrationUntil: null, closureReason: null, disputeReason: null, timeline: [], executionMode: options.executionMode ?? 'demo',
     secrets: { sourceSalt: randomSalt(), finalSalt: null, sourceManifest, finalManifest: null } };
-  record(task, user, 'CREATED', 'Task created in local demo', now); return task;
+  record(task, user, 'CREATED', task.executionMode === 'demo' ? 'Task created in local demo' : 'Task created; chain funding is pending', now); return task;
 }
 export function quoteTask(task: PrivateTask, user: User, now: number) {
   assertBuyer(task, user); requireThat(task.status === 'DRAFT', 'INVALID_STATE', 'Only draft tasks can be quoted.');

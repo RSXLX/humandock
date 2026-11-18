@@ -1,0 +1,98 @@
+{
+  "schema": "humandock.units.v1",
+  "chainId": 400,
+  "network": "me-testnet",
+  "bankDenom": "umec",
+  "bankDecimals": 8,
+  "evmDecimals": 18,
+  "quantumWei": "10000000000",
+  "blockNumber": "5380384",
+  "blockHash": "0x36ec2f1965492c7855244beb31ffb984795510fe2c7a9576c66df703d1fb7550",
+  "status": "matched",
+  "nonZero": true,
+  "observedAt": "2026-11-18T04:09:52.357206+00:00",
+  "liveWritesEnabled": false,
+  "evidence": {
+    "mode": "read-only-network",
+    "generation": "Assembled and checked from retained raw read-only observations; no production transport policy was bypassed and the application unit-verification script was not invoked.",
+    "accountScope": "public fee_collector system module; not a user wallet or DID fixture",
+    "evmAddress": "0xf1829676db577682e944fc3493d451b67ff3e29f",
+    "bankAddress": "me17xpfvakm2amg962yls6f84z3kell8c5lr2wff2",
+    "evmWei": "2375833800000000000",
+    "bankAtoms": "237583380",
+    "bankResponseHeightVerified": true,
+    "cosmosBlockHash": "0x36ec2f1965492c7855244beb31ffb984795510fe2c7a9576c66df703d1fb7550",
+    "sameAccountMappingVerified": true,
+    "metadataResponseHeight": "5380384",
+    "responseHeights": {
+      "mapping": "5380384",
+      "balance": "5380384",
+      "metadata": "5380384"
+    },
+    "metadata": {
+      "description": "Denom metadata for MEC (umec)",
+      "denom_units": [
+        {
+          "denom": "umec",
+          "exponent": 0,
+          "aliases": []
+        },
+        {
+          "denom": "MEC",
+          "exponent": 8,
+          "aliases": []
+        }
+      ],
+      "base": "umec",
+      "display": "MEC",
+      "name": "MEC",
+      "symbol": "MEC",
+      "uri": "",
+      "uri_hash": ""
+    },
+    "checks": {
+      "chainIdMatchesExpected": true,
+      "historicalHeightsMatch": true,
+      "sameAccountMappingVerified": true,
+      "metadataBaseMatches": true,
+      "metadataDisplayExponentMatches": true,
+      "nonZeroBalance": true,
+      "quantumMatches": true,
+      "cosmosBlockHashMatchesEvm": true,
+      "tendermintBlockHashMatchesEvm": true,
+      "canonicalBlockRecheckMatches": true
+    },
+    "sourceFiles": [
+      {
+        "path": "packages/me/observations/nonzero-balance-quantum-probe.json",
+        "sha256": "f0aa94899383550f4fde4506b87f94f5a7b539696cb0b557fb619b3063129d24"
+      },
+      {
+        "path": "packages/me/observations/metadata-fixed-height-probe.json",
+        "sha256": "e6225c68ed4ba953dfda7c6df34ea2fcee17b071e4b8d8870cae6a0d76464fe2"
+      },
+      {
+        "path": "packages/me/observations/fixed-height-probe.json",
+        "sha256": "c92ad2a77c56979d5f67e791721b33bb3f7f15170ac5af667e975b8b6ba36269"
+      },
+      {
+        "path": "packages/me/observations/canonical-block-recheck.json",
+        "sha256": "997cdd4f8f428d839ee696317f29dbc7b6a6ec3d250fcdf4cf22abc4296a75ad"
+      },
+      {
+        "path": "packages/me/observations/height-headers-probe.json",
+        "sha256": "49c8736dd3364b64001f424c6a48c07f1a9d36092a9541f338970b8ff185554c"
+      }
+    ],
+    "evmRpcUrl": "http://118.175.0.249:8545",
+    "cosmosRestUrl": "https://beta-hub-1317.explorer-testnet.me",
+    "tendermintRpcUrl": "https://beta-hub-26657.explorer-testnet.me",
+    "transportLimit": "The EVM probe used the official HTTP test endpoint. An official HTTPS EVM endpoint is still unresolved; live-write configuration stays closed.",
+    "scopeLimits": [
+      "Balances and metadata at this height only; no HumanDock transaction broadcast.",
+      "No transfer, sub-quantum, nonzero gas refund, dispute split, or withdrawal behavior is established by this report.",
+      "Mainnet was not verified."
+    ]
+  },
+  "issues": []
+}

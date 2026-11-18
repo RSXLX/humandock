@@ -3,3 +3,8 @@ export * from './rpc.js';
 export * from './identity.js';
 export * from './contracts.js';
 export * from './generated-abis.js';
+export * from './chain.js';
+export * from './signing.js';
+export * from './balances.js';
+export * from './deployment.js';
+export * from './bank.js';

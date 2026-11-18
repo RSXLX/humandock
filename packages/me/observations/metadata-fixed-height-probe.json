@@ -1,0 +1,46 @@
+{
+  "recordedAtUtc": "2026-11-18T04:06:23.453727+00:00",
+  "readOnly": true,
+  "transactionsSent": false,
+  "url": "https://beta-hub-1317.explorer-testnet.me/cosmos/bank/v1beta1/denoms_metadata/umec",
+  "requestHeaders": {
+    "x-cosmos-block-height": "5380384"
+  },
+  "httpStatus": 200,
+  "responseHeaders": {
+    "date": "Wed, 18 Nov 2026 04:06:29 GMT",
+    "content-type": "application/json",
+    "content-length": "242",
+    "grpc-metadata-content-type": "application/grpc+cosmos-sdk-grpc-codec",
+    "grpc-metadata-x-cosmos-block-height": "5380384",
+    "x-server-time": "1794974789",
+    "server": "envoy",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "x-envoy-upstream-service-time": "607",
+    "connection": "close"
+  },
+  "response": {
+    "metadata": {
+      "description": "Denom metadata for MEC (umec)",
+      "denom_units": [
+        {
+          "denom": "umec",
+          "exponent": 0,
+          "aliases": []
+        },
+        {
+          "denom": "MEC",
+          "exponent": 8,
+          "aliases": []
+        }
+      ],
+      "base": "umec",
+      "display": "MEC",
+      "name": "MEC",
+      "symbol": "MEC",
+      "uri": "",
+      "uri_hash": ""
+    }
+  }
+}

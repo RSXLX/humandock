@@ -1,0 +1,57 @@
+{
+  "recordedAtUtc": "2026-11-18T04:09:19.783893+00:00",
+  "readOnly": true,
+  "transactionsSent": false,
+  "claimsSubmitted": false,
+  "verificationCodesRequested": false,
+  "identityApplicationsSubmitted": false,
+  "thirdPartyDidRecordsStored": false,
+  "sources": [
+    {
+      "url": "https://www.mec.me/en-US/faucet",
+      "sourceType": "official server-rendered page",
+      "sha256": "1c8462a98f6d8acf963b1f16294993d6b0bf01f950b10da929f980aac6d6ae71",
+      "byteLength": 80109
+    },
+    {
+      "url": "https://www.mec.me/_next/static/chunks/pages/%5Blanguage%5D/faucet-3f3787260fe3aa45.js",
+      "sourceType": "official public page asset",
+      "sha256": "d04d6d9c6a29dc4da6dbf5afbfa6d2d7423d6b87f146fab06cc4b0935a1a26da",
+      "byteLength": 72157
+    },
+    {
+      "url": "https://www.explorer-testnet.me/static/js/index.BRM7Isc6.js",
+      "sourceType": "official public explorer asset",
+      "sha256": "4895f0689e35c0d0b74bfae17e6f5d1e6682c55a0f7ab72e798dfb9e46ca942d",
+      "byteLength": 4540361
+    }
+  ],
+  "facts": {
+    "faucetTokensPerClaim": "2 MEC test tokens",
+    "claimLimit": "one per address per UTC calendar day",
+    "tokenFormFields": [
+      "Hub or DA network",
+      "me-format testnet address",
+      "email",
+      "verification code",
+      "anti-bot verification"
+    ],
+    "testIdentityScope": "simulated development identity; not real legal identity verification",
+    "testIdentityOptions": [
+      "real-person simulation",
+      "advanced simulation"
+    ],
+    "subAddressTierApplicationErrorCode": "FAUCET30012",
+    "faucetAuthEnum": [
+      "UNVERIFIED_AUTH",
+      "NORMAL_AUTH",
+      "ADVANCED_AUTH"
+    ],
+    "explorerEnumLabelMapping": {
+      "KYC_LEVEL_ONE": "Real Person Authentication",
+      "KYC_LEVEL_TWO": "KYC Authentication"
+    },
+    "numericAdvancedBusinessMapping": "not explicitly established by these public artifacts",
+    "maintenanceMessagePresence": "Content contains a November 13 maintenance notice; active visibility and submission availability were not established."
+  }
+}

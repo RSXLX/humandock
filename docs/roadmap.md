@@ -1,64 +1,72 @@
 # HumanDock roadmap and acceptance gates
 
-Planning baseline: **2026-11-18 UTC**. The product is limited to US English short advertising text, one final human review per service task, and controlled export of an exactly approved version. Expansion is conditional on the ecosystem-overlap gate.
+Planning baseline: **2026-11-18 UTC**. The product is limited to US-English short advertising text, one final human review per service task, and controlled export of an exactly approved version. Expansion remains conditional on the ecosystem-overlap gate.
 
-## First implementation milestone
+## Current implementation and evidence
 
-The initial repository separates three kinds of evidence:
+| Layer | Implemented scope | Remaining boundary |
+|---|---|---|
+| DEMO application | Next.js/Fastify, persistent PGlite or PostgreSQL, synthetic actors, immutable review workflow, isolated integer ledger | No real identity or MEC custody |
+| Local chain application | Browser wallet sign-in, injected local identity fixture, actual contract deployment, signed intents, funding/delivery/settlement/withdrawal, confirmed event projection and replay | Local Ganache, no actual ME ID or Cosmos bank; test files are not a passing test result |
+| ME adapters and observations | Network/deployment checks, official account/identity routes, read-only testnet chain/height/hash/unit evidence, reconciliation adapters | No HumanDock remote deployment or remote payment flow; supported HTTPS EVM and official advanced-tier mapping remain open |
+| Hosted operation | Application authorization, sessions, idempotency and private storage interfaces | Production RLS rollout, immutable object storage, key management, operational recovery and full security review remain gates |
 
-| Layer | Scope | What it must not imply |
-| --- | --- | --- |
-| Local application | Next.js/Fastify demo, persistent PGlite or configured PostgreSQL, synthetic actors, immutable content workflow, isolated DEMO integer ledger | Real paid customers, live identity verification, or MEC custody |
-| Contract implementation | Solidity sources, compilation, and tests on a local EVM with solc/Ganache/viem | A live ME deployment or an external audit |
-| ME integration preparation | Explicit network configuration, identity/network adapters and read-only preflight, source evidence and gates | That unavailable credentials, test tokens, wallet support, or network semantics have been verified |
-
-The project must keep `APP_MODE=me` money-changing application operations closed until live integration is ready. Preserve reproducible test output for the actual checkout. This roadmap does not assert that every future acceptance check is already passing.
+`APP_MODE=me` now selects the chain-backed application path. It does not certify readiness: configured network/deployment checks and a healthy confirmed event cursor gate writes, with additional unit and identity requirements for admissions. The explicit local runner injects a fixture identity only into that development process. No production environment switch enables it. Details: [live-api.md](./live-api.md), [security-model.md](./security-model.md).
 
 ## Milestones
 
-### M0 — Local end-to-end feasibility
+### M0 — Reproducible local feasibility
 
-Run `npm run dev`, `npm test`, `npm run contracts:compile`, and `npm run test:contracts` from the repository root. Verify the exact commands and results in the checkout rather than inferring success from the presence of a test file.
+Two local execution modes are implemented:
 
-Acceptance evidence:
+- `npm run dev`: persistent DEMO workflow without a wallet or blockchain transaction.
+- `npm run dev:me-local`: local Ganache, actual contracts, real wallet signatures, chain-backed API and UI, and an explicitly labeled `local_test` identity fixture. Chain and in-memory database reset together.
 
-- A synthetic brand creates input A and a review task with fixed terms; DEMO funds stay inside the local ledger.
-- An assigned synthetic reviewer supplies one final structured report about exact version A or proposed B.
-- Review completion and payment remain distinct from the brand's decision to approve export.
-- `PASS` plus exact, current approval permits export; non-PASS, stale/mismatched/revoked approvals do not.
-- Repeated export of the same approved artifact does not charge again, and a new version cannot reuse an old approval.
-- Local contract tests execute the settlement and approval state machines; failures and unfinished cases are reported accurately.
-- Demo mode, fixture identities, local transactions, and unavailable live integration are visibly identified.
+Keep actual command outputs for the tested commit. Relevant commands are `npm test`, `npm run test:contracts`, `npm run test:me`, `npm run test:wallet`, `npm run test:live`, and `npm run test:browser:live`, plus typecheck/build. This roadmap does not assert that CI or every scenario has passed.
+
+Acceptance evidence should demonstrate:
+
+- A brand freezes input A and the terms; a reviewer delivers one immutable report about exact A or proposed B.
+- Wallet login proves wallet control; local identity is visibly a fixture and does not claim ME verification.
+- Funding, assignment, double-signed delivery, settlement/refund and withdrawal use actual local contract receipts in chain mode.
+- Broadcast, receipt confirmation, canonical event application, and balance reconciliation are distinct states.
+- PASS plus an exact unexpired, unrevoked approval permits export; changed/non-PASS content cannot pass the gate.
+- Repeated authorized downloads do not charge again; both download and private receipt recheck current authorization.
+- Retry, rejected prompts, wrong chain/account, transaction replacement, changed block hashes and restart recovery are exercised by the relevant tests or recorded manual checks.
+
+Local event indexing, persisted cursors, receipt checks and operator replay are implemented. `npm run me:reindex -- --execute` reconstructs derived projections for a configured deployment; stop competing API/indexer processes and back up the database first. It neither sends transactions nor recreates missing private source content.
 
 ### G0 — Close the ecosystem-overlap decision
 
-Review the actual ME Pass application wall and credible ecosystem/partner inventory using authorized access. Compare candidates against the complete workflow in [ecosystem-gap.md](./ecosystem-gap.md). The current public search did not establish absence. If a complete equivalent exists, stop duplicating it and assess an integration or a missing component before expanding scope.
+Review the actual ME Pass application wall and credible ecosystem/partner inventory using authorized access. Compare candidates against the complete workflow in [ecosystem-gap.md](./ecosystem-gap.md). The current public search did not establish absence. If a complete equivalent exists, stop duplicating it and assess an integration or a missing component before expanding scope. Local prototype work is not evidence that this product decision has been closed.
 
-### G1 — Verify the target ME network and identity policy
+### G1 — Complete target-network and identity verification
 
-Obtain the officially accepted hackathon network, secured RPC configuration, expected EVM chain ID, explorer/network fingerprint, test tokens, and authorized identity fixtures. Verify active/advanced identity semantics and main/sub-account linkage, then test the actual wallet's challenge, typed-data, and transaction signing flows. Document source versions, observed blocks/hashes, and unsupported cases. See [me-integration.md](./me-integration.md).
+Read-only observations have established testnet EVM chain ID **400**, Cosmos chain `mechain_400-1`, official HTTPS REST/Tendermint services, and a nonzero system-account balance comparison at one canonical height supporting **8 bank decimals** and **10^10 wei per umec**. See [network-verification.md](./network-verification.md) for source pins, heights, hashes and raw observations. These observations apply to the observed testnet deployment; they do not establish mainnet behavior or HumanDock transaction behavior.
 
-### M1 — Demonstrate real ME contract behavior
+Still obtain a supported secure EVM endpoint, the accepted hackathon target environment, authorized test funds and authorized identity fixtures. The official faucet is known, but no token claim was made. Confirm the numeric identity policy and the meaning of HARBOR “advanced” verification; publicly observed enum names do not establish that equivalence. Validate the actual wallet's challenge, typed-data and transaction flows. Keep unsupported routes and unresolved policy explicit.
 
-Deploy the pinned contracts to the confirmed target environment. Record compiler/EVM settings, code hashes, contract addresses, constructor roles, deployment receipts, and source commit. Test funding, assignment, delivery, a normal claim/withdrawal, an expired task refund, a dispute branch, and approval/revocation using authorized test funds.
+### M1 — Demonstrate HumanDock on remote ME
 
-Independently confirm denomination and bank/EVM conversion. The source-derived `q = 10^10` wei per bank atom remains a candidate until measured on the actual deployment. Validate amount conservation and no unrepresentable dust across all splits. Keep mainnet disabled while testing these behaviors.
+After G1, deploy the pinned contracts to the confirmed target environment using the explicit deployment tooling. Record compiler/EVM settings, code hashes, contract addresses, constructor roles, deployment transactions, confirmation policy and source commit. Deployment is not an automatic effect of starting the API.
 
-### M2 — Connect the application to confirmed live state
+Use authorized, bounded test funds to exercise funding, assignment, delivery, normal settlement and withdrawal, undelivered refunds, a dispute branch, and approval/revocation. Repeat same-height balance checks for the configured deployment, then reconcile actual HumanDock EVM and bank movements, quantum-aligned splits, fee prepayment/refund behavior and conservation. Read-only unit evidence alone does not close this milestone. Keep mainnet disabled during these tests.
 
-Replace fixture authentication and local ledger authority with the verified wallet/identity adapter and confirmed contract projections for the target environment. Implement canonical event indexing, persisted cursors, transactional outbox processing, idempotent effects, transaction recovery, and balance reconciliation. Exercise unavailable RPCs, rejected wallet prompts, missing identity records, expired credentials, duplicate events, changed block hashes, and process restarts.
+### M2 — Hosted security and operational acceptance
 
-Move hosted multi-tenant operation behind real authentication, verified PostgreSQL role/RLS policies, scoped reviewer grants, protected immutable object storage, key management, backups, and recovery procedures. Test exact-blob export against current approval state and retain a private receipt with block number and hash. Do not treat PGlite persistence or a passing local domain test as proof of hosted security.
+Run the implemented wallet, identity, intent and indexing code against that verified remote deployment. Exercise historical RPC unavailability, missing or rejected identity, expired attestations, duplicate logs, replacement transactions, reorganization, replay and process restarts. Require exact transaction matches and canonical confirmed state; do not treat a wallet transaction hash as final payment.
+
+Complete the remaining hosting controls: actual PostgreSQL non-owner roles/RLS and compound tenant constraints, private immutable object storage and backup/restore, narrowly scoped reviewer grants, protected issuer keys, alerting, and a durable outbox if background external side effects are introduced. Test deployment-scoped recovery with the private reports and salts needed for projection. A local PGlite or Ganache result is not hosted security evidence.
 
 ### M3 — Small, measured product validation
 
 Recruit a small authorized group of brands and qualified reviewers. Use deliberately bounded ad categories and structured supplied facts. Measure time to usable review, factual issues found, revision rate, successful exact-version export, disputes, and completion/retry failures. Record actual observations; do not prefill customer numbers, revenue, accuracy, time saved, or acquisition claims.
 
-Make clear that review is an editorial service, not a guarantee of platform approval or a legal certification. Reviewer skill screening is independent from identity verification. If users only value a fraction of the workflow, refine that component before adding channels or market features.
+Review is an editorial service, not a guarantee of platform approval or a legal certification. Reviewer skill screening is independent from identity verification. Refine the demonstrated need before expanding channels or market features.
 
 ### M4 — Reproducible HARBOR submission
 
-Freeze the tested commit and preserve the incremental work history. Package English project documentation, a 3–5 minute demonstration with English narration or subtitles, execution instructions, a usable experience, and real ME contract/transaction/call evidence. Prepare a local fallback for review if a provider is unavailable, labeled as a fallback rather than live network activity. Reserve the final 48 hours for submission and access checks.
+Freeze the tested commit and preserve the incremental work history. Package English project documentation, a 3–5 minute demonstration with English narration or subtitles, execution instructions, a usable experience, and actual ME contract/transaction/call evidence for the core integration claim. Prepare a clearly labeled local fallback if a provider is unavailable. Reserve the final 48 hours for submission and access checks.
 
 ## HARBOR facts affecting this schedule
 

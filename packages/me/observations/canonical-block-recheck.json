@@ -1,0 +1,82 @@
+{
+  "recordedAtUtc": "2026-11-18T04:08:36.879827+00:00",
+  "readOnly": true,
+  "transactionsSent": false,
+  "observations": [
+    {
+      "name": "chain_id_recheck",
+      "url": "http://118.175.0.249:8545",
+      "rpcRequest": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "eth_chainId",
+        "params": []
+      },
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "application/json",
+        "vary": "Origin",
+        "date": "Wed, 18 Nov 2026 04:08:43 GMT",
+        "content-length": "42",
+        "x-envoy-upstream-service-time": "699",
+        "server": "envoy",
+        "connection": "close"
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "0x190"
+      }
+    },
+    {
+      "name": "canonical_block_recheck",
+      "url": "http://118.175.0.249:8545",
+      "rpcRequest": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "eth_getBlockByNumber",
+        "params": [
+          "0x521920",
+          false
+        ]
+      },
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "application/json",
+        "vary": "Origin",
+        "date": "Wed, 18 Nov 2026 04:08:43 GMT",
+        "content-length": "1431",
+        "x-envoy-upstream-service-time": "698",
+        "server": "envoy",
+        "connection": "close"
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "baseFeePerGas": "0x7",
+          "difficulty": "0x0",
+          "extraData": "0x",
+          "gasLimit": "0xffffffff",
+          "gasUsed": "0x0",
+          "hash": "0x36ec2f1965492c7855244beb31ffb984795510fe2c7a9576c66df703d1fb7550",
+          "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "miner": "0xfa494d3b45879b72f2047af883ea2bad15f7ae48",
+          "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "nonce": "0x0000000000000000",
+          "number": "0x521920",
+          "parentHash": "0x0a2014959ab3f13d227ad4a0e386867dca9134af73da7d5a2cbfbddcf8014dbb",
+          "receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+          "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+          "size": "0x397",
+          "stateRoot": "0xfd067f95ab88eb86e3fe4df403e85e757d152dfb8b63c29c2ae90ea756de3014",
+          "timestamp": "0x6afd21c8",
+          "totalDifficulty": "0x0",
+          "transactions": [],
+          "transactionsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+          "uncles": []
+        }
+      }
+    }
+  ]
+}

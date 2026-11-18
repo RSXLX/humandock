@@ -8,7 +8,7 @@ export class ApiError extends Error {
 
 export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 20000);
+  const timeout = setTimeout(() => controller.abort(), 120000);
   try {
     const response = await fetch(`/api/v1${path}`, {
       ...options,
@@ -33,7 +33,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
     return data as T;
   } catch (error) {
     if (error instanceof ApiError) throw error;
-    if (error instanceof Error && error.name === "AbortError") throw new ApiError("The API took too long to respond. Check its connection and retry.", 0, "TIMEOUT");
+    if (error instanceof Error && error.name === "AbortError") throw new ApiError("The query timed out. This does not mean a transaction failed. If your wallet broadcast it, recover the saved hash and reconcile before sending anything again.", 0, "TIMEOUT");
     throw new ApiError("Cannot reach the HumanDock API. Start the backend and try again.", 0, "NETWORK_ERROR");
   } finally {
     clearTimeout(timeout);
@@ -52,6 +52,6 @@ export function downloadJson(value: unknown, filename: string) {
 }
 
 export function mutationOptions(csrfToken: string | null | undefined, body: unknown, idempotencyKey?: string): RequestInit {
-  if (!csrfToken) throw new ApiError("Your session has expired. Choose a local demo role to sign in again.", 401, "NO_SESSION");
+  if (!csrfToken) throw new ApiError("Your session has expired. Sign in again to continue.", 401, "NO_SESSION");
   return { method: "POST", headers: { "X-CSRF-Token": csrfToken, "Idempotency-Key": idempotencyKey || crypto.randomUUID() }, body: JSON.stringify(body) };
 }

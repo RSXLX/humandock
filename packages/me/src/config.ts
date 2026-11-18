@@ -51,7 +51,7 @@ export function loadMeConfig(env: Record<string, string | undefined>): MeNetwork
   const bankDenom = required(env, 'ME_BANK_DENOM');
   if (!/^[A-Za-z0-9_-]{1,16}$/.test(nativeSymbol) || !/^[A-Za-z0-9/_.:-]{1,128}$/.test(bankDenom)) throw new MeConfigurationError('Invalid native symbol or bank denom');
   let minimumKycLevel: number | undefined;
-  if (env.ME_MIN_KYC_LEVEL !== undefined) {
+  if (env.ME_MIN_KYC_LEVEL !== undefined && env.ME_MIN_KYC_LEVEL !== '') {
     const value = decimalInteger(required(env, 'ME_MIN_KYC_LEVEL'), 'ME_MIN_KYC_LEVEL');
     if (value < 1n || value > 5n) throw new MeConfigurationError('ME_MIN_KYC_LEVEL must be 1..5; advanced verification mapping requires official confirmation');
     minimumKycLevel = Number(value);

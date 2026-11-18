@@ -11,17 +11,26 @@
   },
   "scripts": {
     "dev": "node --import tsx scripts/dev.ts",
+    "dev:me-local": "node --import tsx scripts/dev-me-local.ts",
     "dev:api": "node --watch --import tsx apps/api/src/index.ts",
     "dev:web": "npm run dev --workspace apps/web",
     "build": "npm run contracts:compile && npm run build --workspace apps/web",
     "typecheck": "tsc --noEmit && npm run typecheck --workspace apps/web",
     "test": "node --import tsx --test tests/api/*.test.ts tests/domain/*.test.ts",
     "test:contracts": "node --import tsx --test tests/contracts/*.test.ts",
+    "test:me": "node --import tsx --test tests/me/*.test.ts",
+    "test:live": "node --import tsx --test tests/live/*.test.ts",
+    "test:wallet": "node --import tsx --test apps/web/lib/wallet.test.ts",
     "contracts:compile": "node --import tsx scripts/compile-contracts.ts",
     "me:preflight": "node --import tsx scripts/me-preflight.ts",
+    "me:verify-units": "node --import tsx scripts/me-verify-units.ts",
+    "me:deploy": "node --import tsx scripts/me-deploy.ts",
+    "me:local": "node --import tsx scripts/me-local-chain.ts",
+    "me:reindex": "node --import tsx scripts/me-reindex.ts",
     "start:api": "node --import tsx apps/api/src/index.ts",
     "start:web": "npm run start --workspace apps/web",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "test:browser:live": "playwright test --config playwright.live.config.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "0.5.16",

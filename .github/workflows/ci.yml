@@ -25,15 +25,20 @@ jobs:
       - run: npm test
       - run: npm run contracts:compile
       - run: npm run test:contracts
+      - run: npm run test:me
+      - run: npm run test:live
+      - run: npm run test:wallet
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
+      - run: npm run test:browser:live
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: browser-evidence
           path: |
             artifacts/browser/
+            artifacts/browser-live/
             playwright-report/
             test-results/
           if-no-files-found: ignore

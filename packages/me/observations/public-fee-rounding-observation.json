@@ -1,0 +1,38 @@
+{
+  "recordedAtUtc": "2026-11-18T04:09:29.841929+00:00",
+  "readOnly": true,
+  "transactionsSent": false,
+  "scope": "Existing public testnet transaction, observed only. Selected fee and receipt fields retained; no sender, recipient, signature, contract input, identity, or DID record retained in this projection. This is not a HumanDock transaction.",
+  "evmRpcUrl": "http://118.175.0.249:8545",
+  "tendermintRpcUrl": "https://beta-hub-26657.explorer-testnet.me",
+  "ethereumTransactionHash": "0x85c34480c5b2ca788f545c6c5e532154e2c29334cbf2b7997dfd62d62290ae88",
+  "tendermintTransactionHash": "2BC41D06E442B90A8CCF7F4D95FA008D471964BF0E44CB01B9BD51B1B02CCA58",
+  "height": "5379372",
+  "blockHash": "0x37b542275f61b15dd1cc3a0b8b125016eee9f68dc12728f238443a269e09116b",
+  "transactionType": 0,
+  "chainId": 400,
+  "receiptStatus": 1,
+  "gasLimit": "21000",
+  "gasUsed": "21000",
+  "gasPriceWei": "8",
+  "effectiveGasPriceFieldPresentInReceipt": false,
+  "tendermintFeeEvents": [
+    "1umec"
+  ],
+  "quantumWei": "10000000000",
+  "receiptGasProductWei": "168000",
+  "expectedPrepaidBankAtoms": "1",
+  "expectedRefundBankAtoms": "0",
+  "expectedNetBankGasWei": "10000000000",
+  "checks": {
+    "receiptAndTransactionBlockHashMatch": true,
+    "sameHeightAcrossInterfaces": true,
+    "feeEventMatchesSourceFormula": true,
+    "unusedGasZero": true
+  },
+  "limitations": [
+    "No isolated before/after account-balance attribution was attempted.",
+    "This sample does not test a nonzero refund or a failed transaction.",
+    "The EVM hop used published HTTP transport."
+  ]
+}

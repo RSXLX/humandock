@@ -5,6 +5,7 @@ const repositoryRoot = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
   testDir: './tests/browser',
+  testIgnore: '**/live-workflow.spec.ts',
   fullyParallel: false,
   workers: 1,
   forbidOnly: Boolean(process.env.CI),

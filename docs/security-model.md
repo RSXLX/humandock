@@ -1,100 +1,105 @@
 # Security model and implementation boundaries
 
-This document specifies the trust boundaries for the first HumanDock implementation and the requirements for a live service. It is a design and review document, not an audit certificate. Local application tests and local EVM tests establish only the behaviors they actually execute.
+This document separates implemented controls, local evidence, and requirements for a hosted remote-ME service. It is not an audit certificate. Test evidence supports only the code and environment actually exercised; a local EVM result is not proof of an ME deployment.
 
 ## Modes and protected assets
 
-The demo uses synthetic fixtures and an isolated **DEMO** integer ledger. It must not accept real funds, represent fixture identities as live ME verification, or show local transaction identifiers as ME network evidence. `APP_MODE=me` must keep money-changing application functions unavailable until the live adapter and the gates in [me-integration.md](./me-integration.md) are complete. Changing a configuration string is not a deployment procedure.
+| Mode | Authority | Boundary |
+|---|---|---|
+| `APP_MODE=demo` | Synthetic sessions and an isolated DEMO integer ledger | Trusted local development only; no wallet proof or real custody |
+| `APP_MODE=me`, `ME_NETWORK=local` | Wallet signatures, actual local contracts, confirmed local events | Explicit local runner uses `local_test` identity; no ME ID or Cosmos bank claim |
+| `APP_MODE=me`, remote ME network | Configured wallet/identity adapters, verified deployment, canonical confirmed state | Implemented path remains gated; no HumanDock remote deployment or funds flow has been demonstrated |
 
-Protected assets are customer text and facts, immutable review reports, private salts and commitments, account/organization membership, signing credentials, settlement credits, and approval records. User private keys, identity documents, biometric material, and unrelated private project data do not belong in this repository or its fixtures. Public receipts, logs, screenshots, and test output must not expose those assets.
+Mode values are validated. Demo sessions cannot authorize chain-backed requests, and chain sessions must match the configured chain. Configuration alone does not make writes ready: chain ID, deployed code/roles/quantum and event synchronization must pass. New admissions additionally require identity policy, unit evidence and the appropriate attesters. The explicit local runner injects its identity fixture in process; no production environment variable activates a synthetic identity verifier.
 
-### First-milestone limitations
+Protected data includes customer text and facts, immutable reports, private salts/manifests, membership, session tokens, signing credentials and approval/settlement records. User spending keys, identity documents, biometrics and unrelated private project data do not belong in the repository or public output. Only public development keys belong in the disposable local fixture. No third-party DID record has been stored in this repository.
 
-The browser demo can select predefined synthetic roles. Its API uses sessions, CSRF checks, actor/organization checks, and persistent local state, but the ability to select a fixture identity is intentionally not proof of that person's identity. The demo must stay in a trusted development environment; do not expose its role-selection flow to real customers or use it for real custody.
+### Current limits
 
-The initial storage implementation is an application-level prototype. A configurable PostgreSQL connection does not imply that production RLS roles, compound tenant constraints, external immutable object storage, a durable chain indexer, or transactional outbox recovery have been implemented and verified. Requirements for these controls below are live-service acceptance criteria.
+The application implements authorization, concurrency checks, transactional idempotency, wallet authentication, chain intents, persisted event cursors and operator replay. Hosted PostgreSQL RLS/roles, full compound tenant constraints, an external immutable object store, a separate transactional outbox and managed key operations remain acceptance work. A configurable PostgreSQL connection is not evidence that those controls exist.
 
-The current Solidity registry uses EOA signatures and the task buyer as the brand authority. Delegated brand approvers and contract-wallet signature validation are deferred. Its funds are exercised by the separate local EVM test suite, not by the browser's DEMO ledger. The application has no established live ME deployment or verified chain index. Keep these distinctions visible in demonstrations and receipts.
+The contracts are non-upgradeable, use EOA signatures and make the task buyer the brand approval authority. Contract-wallet signature validation and delegated brand approvers are deferred. Public wallet and transaction metadata remain linkable despite private application identity aliases.
 
 ## Trust boundaries
 
 | Component or actor | Trusted for | Not trusted for |
-| --- | --- | --- |
-| Browser | Presenting requests and obtaining the user's wallet action | Authoritative roles, identity status, prices, timestamps, ledger balances, or export eligibility |
-| Application API | Input validation, authorization, version freezing, private storage, and controlled export | Claiming an unconfirmed transaction is final |
-| Reviewer | Signing a review about the exact final version | Granting the brand's export permission or moving funds outside the contract rules |
-| Delivery attester | Verifying schema, exact artifact linkage, signatures, and retrievability | Certifying the report's substantive quality or legal correctness |
-| Brand approver | Approving the exact final artifact for the stated purpose and expiry | Rewriting the review verdict or authorizing a different version implicitly |
-| Arbitrator | Applying the agreed dispute rule to reviewer service fees | Editing delivered content or silently resetting deadlines |
-| ME identity source | Reporting observed identity/account state under a verified policy | Proving English proficiency, review quality, or total anonymity |
-| AI provider | Producing bounded advisory analysis | Issuing identity proofs, approving export, authorizing payment, or determining the final verdict |
-| Confirmed contract state | Settlement and approval records for the exact deployment | Protecting plaintext already downloaded or proving off-chain content quality |
+|---|---|---|
+| Browser and wallet UI | Requesting an action and obtaining the user's signature | Authoritative role, identity, price, deadline, balance or export eligibility |
+| Application API | Validation, authorization, private storage, exact intent construction and controlled export | Declaring an unconfirmed hash final or manufacturing identity policy |
+| Reviewer | Signing a verdict about an exact final artifact | Granting brand export permission or changing escrow rules |
+| Delivery attester | Schema, signatures, exact artifact linkage and retrievability | Report quality or legal correctness |
+| Brand approver | Exact commitment, purpose and expiry | Implicit approval of a changed file or rewriting the reviewer verdict |
+| Arbitrator | The agreed allocation of the reviewer service fee | Altering delivered content or resetting deadlines |
+| ME identity source | Observed account/identity state under a documented policy | English skill, review quality, or total anonymity |
+| AI provider | Bounded suggestions | Identity proof, final approval, signature or payment authorization |
+| Confirmed contract state | Records for the exact verified deployment | Recalling downloaded text or proving off-chain quality |
 
-The app attester, designated approver, and arbitrator are explicit trusted roles. Do not call the entire system trustless. A public wallet address may create linkability even when the application does not publish a DID.
+The quote issuer, assignment issuer, delivery attester and arbitrator are explicit trusted roles. The system is not wholly trustless. Attestation keys are distinct from user spending keys; the API constructs transactions but does not hold a user's wallet key or automatically broadcast their payments.
 
-## Identity, sessions, and organization isolation
+## Wallet authentication and identity admission
 
-Live wallet login requires a one-use challenge scoped to origin/domain, URI, chain, actor, issuance time, and expiry. Signature verification must precede creation of a session. Session cookies require appropriate HttpOnly/Secure/SameSite behavior, CSRF protection for browser writes, and logout/expiry handling. A demo role selector is a fixture control, not production authentication.
+Wallet sign-in uses a stored, one-use SIWE challenge with domain/origin, URI, account, chain ID, random nonce and five-minute expiry. A separate HttpOnly browser cookie binds the challenge to the initiating browser. Verification consumes it transactionally and replaces any prior session. An eight-hour session proves wallet control, not ME identity.
 
-Use a private canonical principal for main/sub-account identity matching; prevent self-review across wallet aliases and relevant organization membership. Application aliases must be keyed or randomly mapped, not a bare hash of a public DID. Freeze the task's alias-key version so key rotation cannot change the identity comparison on an existing order.
+Sessions use HttpOnly and SameSite=Strict cookies; Secure is enabled for the configured HTTPS chain-mode origin. Browser writes use origin validation and CSRF tokens. Auth bootstrap uses origin and challenge-cookie binding instead of a preexisting CSRF token. Logout and AI assistance require CSRF; ordinary business mutations also use idempotency keys. The frontend invalidates authentication after an account change and blocks signing on the wrong chain. See [live-api.md](./live-api.md).
 
-Every resource authorization checks organization, actor, and action in the API. Database compound references must preserve organization/task/version ownership. PostgreSQL row security should use both `USING` and `WITH CHECK`, with a non-owner application role that cannot bypass it and transaction-local tenant context. An assigned cross-organization reviewer receives a narrowly scoped task grant; do not disable isolation for an entire connection. See [PostgreSQL row security](https://www.postgresql.org/docs/current/ddl-rowsecurity.html). The embedded PGlite demo does not itself prove that a production PostgreSQL role/RLS deployment is correct; verify the actual server migration and role configuration before hosting multiple real tenants.
+Reviewer roles come from a server-configured invitation list. The browser cannot grant itself a reviewer role. ME identity admission resolves the EVM address through the official bank-account route, validates its address representation, and checks main/sub-account binding, active status and the configured minimum KYC policy with consistent observed heights. Missing, ambiguous or unavailable evidence is not accepted as verified identity. Only the signed-in, authorized wallet is checked; no public identity directory is collected.
+
+The application uses keyed private canonical aliases to prevent self-review across mapped main/sub-account wallets. It does not publish a bare hash of a public DID. A task freezes the identity-key fingerprint: changing `ME_ID_HASH_SECRET` blocks new funding/assignment admissions for that task until the key is restored or explicitly migrated. Existing delivery and exit paths do not depend on a fresh KYC decision. Back up the stable key with the database; an automatic versioned key migration is not implemented.
+
+Quote and assignment attestations have short expiry. A signature already issued can remain valid on chain until its expiry even if off-chain identity changes; this is not instantaneous revocation. HARBOR's “advanced” verification still needs an official numeric policy mapping. A configured minimum is an application policy, not proof of hackathon eligibility.
+
+## Tenant isolation and concurrency
+
+Application reads and mutations check organization, actor, task role and execution environment. Live task/intents/ledger handling also scopes the configured chain and deployment. The assigned cross-organization reviewer receives access to that task; it is not a global organization bypass. Resource responses omit private task salts/manifests except the explicitly private authorized export receipt.
+
+Business mutations run under database transactions with expected task versions and actor/route/key/body-hash idempotency. Chain-mode idempotency is scoped to the chain, escrow and wallet actor. Same-key different-input requests fail; ordinary same-input retries return the original response. Identity refresh and reconciliation retain key/body consistency but reread changing external state instead of caching an old success.
+
+A hosted database must additionally enforce ownership with compound references and PostgreSQL RLS `USING` and `WITH CHECK`, using a non-owner application role and transaction-local tenant context. Those server roles/policies need actual deployment verification; PGlite does not prove them. See [PostgreSQL row security](https://www.postgresql.org/docs/current/ddl-rowsecurity.html).
 
 ## Immutable versions and controlled export
 
-The purchased review records its input **A** and brief. Before final delivery, the reviewer may propose **B** and review B. There is one final report per service task. An edited version after delivery becomes a new revision and a new paid review task; it does not overwrite the delivered report or restart the existing deadline.
+A task records purchased input **A** and its brief. The reviewer may propose **B** before delivering one final report. Later edits create a new version and require a new review task; they do not overwrite the report or restart its deadline. Quote issuance freezes the purchased input and terms.
 
-Use detached signatures to avoid a self-referential hash:
+The final manifest binds the task/input, exact reviewed bytes and verdict. Source and final manifests use independent random 256-bit salts and distinct commitment domains. The reviewer and gate sign the same verdict-bearing delivery envelope. Public contract records contain `taskCommitment` and `deliveryCommitment`, not the private manifest/report hash, salt or raw text. This reduces short-text guessing but does not hide wallet metadata. Canonical JSON and frozen UTF-8 text bytes must remain deterministic; see [RFC 8785](https://www.rfc-editor.org/rfc/rfc8785).
 
-```text
-ReviewPayload without signatures
-  -> private payload digest
-  -> final manifest tying the task/input to exact B and verdict
-  -> salted delivery commitment
-  -> DeliveryEnvelope
-  -> separate reviewer and delivery-attester signatures
-```
+Every actual download and receipt request requires:
 
-The source and final manifests use independent random 256-bit salts and distinct domains. On-chain task/report records carry `taskCommitment` and `deliveryCommitment`; never put the plaintext, bare short-text digest, private manifest/report hash, or salt in public calldata, events, or logs. Salted commitments reduce easy guessing of short text; they do not hide wallet or transaction metadata. Canonicalization must be explicitly specified; [RFC 8785](https://www.rfc-editor.org/rfc/rfc8785) describes JSON canonicalization, while raw text must retain the frozen UTF-8 bytes without a hidden trim or Unicode transformation.
+1. The actor may read the requested task/version in the current execution environment.
+2. The immutable reviewed version and manifest match a final `PASS` report.
+3. The brand approval binds that exact commitment, export purpose and expiry.
+4. Approval is unexpired and unrevoked in a current confirmed chain view for chain mode.
+5. The server recomputes the fixed stored version's digest/commitment and emits the same bytes, without substituting a `latest` object.
 
-An export requires all of the following at validation time:
+`BLOCK` and `CHANGES_REQUIRED` can complete a payable service but cannot pass this gate. Service settlement is independent from export approval. There is no override, advertising-platform publishing, or consume-per-export transaction. Repeated authorized downloads cost no additional review fee.
 
-1. The actor is authorized to read the requested organization/task/version.
-2. The immutable version and final manifest match the delivered report, and its verdict is `PASS`.
-3. The designated brand approver authorized the exact final commitment, export purpose, and validity interval.
-4. The approval is unexpired and unrevoked according to a sufficiently fresh confirmed chain view in live mode.
-5. The server reads the fixed immutable blob, recomputes the private digest and commitment, and emits those same bytes. It never substitutes a `latest` or `head` object after checking.
+Export creation is idempotent and may return previously created metadata. That metadata is not a bearer capability: the download and private receipt endpoints always recheck current authorization and approval. The current implementation stores immutable versions in the database; production protected object storage remains separate work.
 
-`CHANGES_REQUIRED` and `BLOCK` can complete and pay for a review service, but cannot pass the export gate. Payment settlement is not a prerequisite for a valid brand export approval. There is no P0 override, external publishing hook, or on-chain consume operation. The current demo exports the approved copy as TXT and a private JSON receipt. An active approval allows repeated downloads without another service fee. Idempotent replay still rechecks current access, revocation, expiry, and content; it cannot return an old unrestricted download URL.
+The demo receipt has `chain: null` and an explicit local-DEMO notice. A chain receipt records the observed block number and hash; local-chain receipts explicitly disclaim ME certification. Receipts contain private manifest/salt evidence and are not public certificates. A revocation confirmed before validation blocks export. No system promise recalls already downloaded bytes or makes chain revocation atomic with bytes already in flight.
 
-A private demo receipt records the exact version/commitment, approval reference, and validation time, with `chain: null`. A future live receipt must additionally record the verified block number **and hash** and state validity at that observed chain state. A revocation confirmed before validation blocks export; the system cannot recall downloaded content or promise atomic ordering between a chain revocation and bytes already in flight.
+## Money, signatures and deadlines
 
-## Settlement invariants
+All amounts are integers, `F = W + P`. Normal completion allocates W to the reviewer and P to the platform. Pre-assignment cancellation or missed delivery refunds F. The 48-hour post-delivery dispute window is fixed. Disputes divide only W and refund P; after 72 hours without arbitration, the agreed quantum-aligned 50/50 fallback divides W and refunds P. This resolves deadlock; it is not a quality-fairness guarantee.
 
-Amounts use integers, with `F = W + P`. A normal completed service allocates W to the reviewer and P to the platform. Cancellation before assignment or a missed required delivery returns F. Following a delivered report, the buyer has 48 hours to dispute. Dispute allocation divides only W by `alphaBps`, refunds P, and must preserve the deployment's confirmed monetary quantum. An unresolved dispute after 72 hours uses the pre-agreed 50/50 allocation of W with P refunded; this is a deadlock fallback, not a guarantee of a fair quality judgment.
+Chain timestamps define contract deadlines. Before-deadline actions use `<`; timeout actions use `>=`; retries do not reset them. Terminal transitions allocate claimable credit once. A separate pull withdrawal transfers it. Successful settlement is not equivalent to external-wallet receipt or reconciled bank movement.
 
-Deadlines come from chain timestamps, are fixed by the relevant transition, and do not reset when an API request is retried. Before-deadline actions use `< deadline`; timeout actions use `>= deadline`. A terminal settlement allocates claimable credits once. Withdrawals are a separate transaction: settled is not the same as money arriving in an external wallet.
+EIP-712 structures bind the relevant actor, task, commitment, nonce, expiry, chain and contract, with monetary/deadline fields as appropriate. Purpose-separated signatures and contract nonce consumption prevent cross-action replay. EIP-712 alone is not replay protection; see [the specification](https://eips.ethereum.org/EIPS/eip-712). A database cancellation flag cannot invalidate an already issued on-chain authorization before expiry.
 
-Contract tests must cover unauthorized calls, duplicate finalization, deadline boundaries, refund/dispute branches, quantum-aligned rounding, total allocation conservation, reentrant or reverting receivers, nonce replay, wrong domains, and mismatched versions. Passing a local test suite does not establish the running ME network's bank/EVM conversion behavior.
+Fee inputs and splits must preserve the deployment's immutable monetary quantum. Testnet read-only evidence supports `q = 10^10 wei` for the observed ME deployment; it is not a HumanDock funding/splitting/withdrawal test or a mainnet guarantee. Existing API `Atoms` fields are EVM wei strings, not bank atoms. ME fee reconciliation accounts for bank-rounded prepayment/refund; ordinary EVM mode uses its own explicit gas model. Details: [network-verification.md](./network-verification.md).
 
-## Signatures and privileged operations
+The owner can pause new funding and new assignments, not existing delivery, dispute, settlement, refund and withdrawal paths. Local contract tests exercise actual bytecode, including replay, deadlines, allocation and receiver failures. External review remains necessary before real custody.
 
-Each signed action binds its purpose, actor, task/approval, exact commitment, nonce, expiry, chain ID, and verifying contract. Monetary terms also bind W, P, asset, beneficiaries, and applicable deadlines. The reviewer and delivery attester sign the same verdict-bearing delivery envelope. Approve and revoke operations need replay protection and an audit trail. [EIP-712](https://eips.ethereum.org/EIPS/eip-712) structures signed data but does not provide application replay protection by itself.
+## Transaction confirmation, reorganization and replay
 
-Once a quote is issued, its task snapshot is frozen. Editing the input creates a new task and quote. An old signed quote remains usable for its old snapshot until expiry or a contract-supported, confirmed nonce cancellation; a database flag alone cannot invalidate the signed on-chain authorization. Do not promise quote cancellation if the deployed contract has no corresponding operation.
+A submitted hash is only a hint. Before confirmation, the server verifies the transaction's chain, sender, target, calldata and value against its intent, then checks receipt success, canonical block/hash and required confirmation depth. `confirmed` receipt status and `applied` projection status are separate. A mismatched transaction is rejected and cannot make the intent applied.
 
-Use separate purposes/key IDs for identity, assignment, quote, and delivery attestations. Keep production attester keys outside browser bundles and source control. Only verified deployment configuration selects authorized issuers. A source-level key rotation is not a substitute for revoking the old key under the deployed contract rules. Do not create a path for an operator or AI model to move customer funds outside the documented state machine.
+Replacement recovery uses an already observed sender/nonce. An exact-call speed-up can continue confirmation; a different call is marked replaced only after nonce consumption is confirmed. An unknown original nonce is not guessed. Neither UI nor API automatically resends an uncertain transaction. Provider or pruned-history failures can need operator investigation.
 
-## Events, retries, and failure behavior
+Event identity includes chain, contract, block hash, transaction hash and log index. Event insertion, task/ledger effects and cursor advancement commit together. The scanner checks the prior checkpoint before and after the scan and verifies the boundary parent link. Detected reorganization blocks writes/exports and persists the blocked cursor. Receipt or withdrawal-snapshot reorgs also block the deployment.
 
-The live indexer accepts events only from an allowlisted network fingerprint, chain ID, contract address, and ABI. It verifies receipt status and canonical block/hash and binds event fields back to the task terms. A transaction hash submitted by a browser is a lookup hint, not proof of payment.
+The operator stops API/indexer processes, backs up the database, then uses `npm run me:reindex -- --execute` for the matching deployment. Replay archives prior event evidence and rebuilds derived projections from canonical confirmed logs and immutable private records. It sends no transaction and cannot restore missing text or salts. A separate outbox for additional external side effects is not implemented or claimed.
 
-Store raw events with network, contract, transaction hash, log index, and block hash. Preserve fork history with canonical status instead of overwriting evidence. Persist scan and confirmation cursors with their block hashes. Apply derived ledger entries once per confirmed event, and reconcile contract liabilities, credits, withdrawals, and application projections. If chain state cannot be established or balances diverge, stop new live money writes and exports that depend on that state; retain safe read/recovery paths.
+Withdrawal evidence distinguishes `verified`, `evm-only`, `unverified` and `mismatch`. Matching EVM snapshots alone do not prove a ME bank reconciliation. Historical unavailability or concurrent wallet activity can prevent an isolated balance proof without implying that the confirmed contract transaction failed. Preserve this distinction in the UI and audit evidence.
 
-Domain changes and outbox jobs belong in one database transaction. Consumers must tolerate at-least-once delivery. Idempotency is scoped by organization, actor, route, and key; reusing a key with a different payload returns a conflict. A timeout after broadcast becomes unknown/pending until reconciled, not an automatic second payment.
+## Remaining hosted-service gates
 
-## AI and demo data
-
-Customer text, reviewer notes, and quoted instructions are untrusted data. AI output cannot change permissions, sign an approval, choose a payment transaction, or fetch arbitrary URLs. P0 uses structured supplied facts; a later web-fetch feature needs a separate SSRF and data-exposure design. Apply input/output size limits, timeouts, bounded retries, and cost limits. If AI fails, disclose the missing assistance and continue the human workflow; do not prevent valid refunds or withdrawals.
-
-Fixtures and screenshots must be synthetic. Redact secrets, raw identities, source text, private hashes, and salts from telemetry by default. Publish only the minimal status and deployment evidence needed for verification; a private receipt is shared only through an explicit access mechanism. The local demo is intended for a trusted development environment until real authentication, deployed tenant isolation, storage permissions, rate limits, operational recovery, and live-chain gates have been verified.
+Before admitting real customers or value, close the ecosystem-overlap decision, supported secure EVM access, official identity policy, remote deployment and authorized workflow evidence. Complete tenant DB roles/policies, private storage/backups, managed issuer keys, incident/replay procedures and contract/application review. Use [.env.example](../.env.example) for configuration, [live-api.md](./live-api.md) for the implemented protocol and [roadmap.md](./roadmap.md) for acceptance gates. These requirements are not claims of completed production hardening.

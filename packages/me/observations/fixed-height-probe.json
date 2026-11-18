@@ -1,0 +1,346 @@
+{
+  "recordedAtUtc": "2026-11-18T03:57:55.330080+00:00",
+  "readOnly": true,
+  "transactionsSent": false,
+  "requestedHeight": 5380384,
+  "observations": [
+    {
+      "name": "evm_fixed_block",
+      "url": "http://118.175.0.249:8545",
+      "rpcMethod": "eth_getBlockByNumber",
+      "params": [
+        "0x521920",
+        false
+      ],
+      "requestHeaders": {},
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "application/json",
+        "date": "Wed, 18 Nov 2026 03:57:53 GMT"
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "baseFeePerGas": "0x7",
+          "difficulty": "0x0",
+          "extraData": "0x",
+          "gasLimit": "0xffffffff",
+          "gasUsed": "0x0",
+          "hash": "0x36ec2f1965492c7855244beb31ffb984795510fe2c7a9576c66df703d1fb7550",
+          "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "miner": "0xfa494d3b45879b72f2047af883ea2bad15f7ae48",
+          "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "nonce": "0x0000000000000000",
+          "number": "0x521920",
+          "parentHash": "0x0a2014959ab3f13d227ad4a0e386867dca9134af73da7d5a2cbfbddcf8014dbb",
+          "receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+          "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+          "size": "0x397",
+          "stateRoot": "0xfd067f95ab88eb86e3fe4df403e85e757d152dfb8b63c29c2ae90ea756de3014",
+          "timestamp": "0x6afd21c8",
+          "totalDifficulty": "0x0",
+          "transactions": [],
+          "transactionsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+          "uncles": []
+        }
+      },
+      "elapsedMs": 6133
+    },
+    {
+      "name": "tm_fixed_block",
+      "url": "https://beta-hub-26657.explorer-testnet.me/block?height=5380384",
+      "rpcMethod": null,
+      "params": null,
+      "requestHeaders": {},
+      "httpStatus": 200,
+      "responseHeaders": {
+        "date": "Wed, 18 Nov 2026 03:57:55 GMT",
+        "content-type": "application/json"
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": -1,
+        "result": {
+          "block_id": {
+            "hash": "36EC2F1965492C7855244BEB31FFB984795510FE2C7A9576C66DF703D1FB7550",
+            "parts": {
+              "total": 1,
+              "hash": "505BFC92ACDE5EB51DA99597F8A08230CFFFF0C765638C169535E7B55BE635FC"
+            }
+          },
+          "block": {
+            "header": {
+              "version": {
+                "block": "11"
+              },
+              "chain_id": "mechain_400-1",
+              "height": "5380384",
+              "time": "2026-11-18T03:55:52.753334604Z",
+              "last_block_id": {
+                "hash": "0A2014959AB3F13D227AD4A0E386867DCA9134AF73DA7D5A2CBFBDDCF8014DBB",
+                "parts": {
+                  "total": 1,
+                  "hash": "FC07A22EA1D5B2FBDF4D4A45A5332E619356F817AFDDD36867467CD2AAF980AE"
+                }
+              },
+              "last_commit_hash": "45DEED8E13B0DBFB1F2A857334211EBA6433455F7168C24A93A0DC93C99B2147",
+              "data_hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "validators_hash": "761856F62CE53049AB0E0199991AA9C89C1665EFE89B7911F320C9EB416DC761",
+              "next_validators_hash": "761856F62CE53049AB0E0199991AA9C89C1665EFE89B7911F320C9EB416DC761",
+              "consensus_hash": "BAB5041D16246E2757DB17AF4B55FAAFBFD8660F7EB32871C99F91D0E58D5BF2",
+              "app_hash": "FD067F95AB88EB86E3FE4DF403E85E757D152DFB8B63C29C2AE90EA756DE3014",
+              "last_results_hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "evidence_hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "proposer_address": "982384487F59EEC32254AA502585B164532F7856"
+            },
+            "data": {
+              "txs": []
+            },
+            "evidence": {
+              "evidence": []
+            },
+            "last_commit": {
+              "height": "5380383",
+              "round": 0,
+              "block_id": {
+                "hash": "0A2014959AB3F13D227AD4A0E386867DCA9134AF73DA7D5A2CBFBDDCF8014DBB",
+                "parts": {
+                  "total": 1,
+                  "hash": "FC07A22EA1D5B2FBDF4D4A45A5332E619356F817AFDDD36867467CD2AAF980AE"
+                }
+              },
+              "signatures": [
+                {
+                  "block_id_flag": 2,
+                  "validator_address": "D1838664D6A5C2494BD6F538A5403C64570F944D",
+                  "timestamp": "2026-11-18T03:55:52.753332136Z",
+                  "signature": "FvdGHPe6yrrMolWsiyzrJl1jr41Ad0vA+J3XPOwCFJ3Z+NLmaxPXxZ/36stwx+WxqhTlqTFeHA5kkpZpednvDw=="
+                },
+                {
+                  "block_id_flag": 2,
+                  "validator_address": "069BECC6443B06A879C611872EFB5413799F5B85",
+                  "timestamp": "2026-11-18T03:55:52.753524826Z",
+                  "signature": "rXWz4l8ANhmGmUJcolM3WdZBB2b45wWACCbOPK9foCR9/CdkwaLbEbVUbmIHgKH5UQRJUSBgK4W/f1Hf0gaUAw=="
+                },
+                {
+                  "block_id_flag": 2,
+                  "validator_address": "982384487F59EEC32254AA502585B164532F7856",
+                  "timestamp": "2026-11-18T03:55:52.753334604Z",
+                  "signature": "a7IoL8A5YfhFVHEmhziPCHpgr1MHTyoFkUZB61P/E+v7SG7ZdJ11CiLrIkADeyqOGQg8HPIirStoc1NhoFwkBA=="
+                },
+                {
+                  "block_id_flag": 2,
+                  "validator_address": "C2F39C93B4EB452B428A1887906727BE0894D4AD",
+                  "timestamp": "2026-11-18T03:55:52.753788807Z",
+                  "signature": "f0y5YLUPZiICIQHdtcz+Ovuhf+D7pdiGb0vU/iDjFvsu2t8YLLl7cNDMEsNS+nql7rKYic9E2eQW/Ojyps40AA=="
+                }
+              ]
+            }
+          }
+        }
+      },
+      "elapsedMs": 7772
+    },
+    {
+      "name": "rest_fixed_block",
+      "url": "https://beta-hub-1317.explorer-testnet.me/cosmos/base/tendermint/v1beta1/blocks/5380384",
+      "rpcMethod": null,
+      "params": null,
+      "requestHeaders": {},
+      "httpStatus": 200,
+      "responseHeaders": {
+        "date": "Wed, 18 Nov 2026 03:57:53 GMT",
+        "content-type": "application/json"
+      },
+      "response": {
+        "block_id": {
+          "hash": "NuwvGWVJLHhVJEvrMf+5hHlVEP4sepV2xm33A9H7dVA=",
+          "part_set_header": {
+            "total": 1,
+            "hash": "UFv8kqzeXrUdqZWX+KCCMM//8MdlY4wWlTXntVvmNfw="
+          }
+        },
+        "block": {
+          "header": {
+            "version": {
+              "block": "11",
+              "app": "0"
+            },
+            "chain_id": "mechain_400-1",
+            "height": "5380384",
+            "time": "2026-11-18T03:55:52.753334604Z",
+            "last_block_id": {
+              "hash": "CiAUlZqz8T0ietSg44aGfcqRNK9z2n1aLL+93PgBTbs=",
+              "part_set_header": {
+                "total": 1,
+                "hash": "/AeiLqHVsvvfTUpFpTMuYZNW+Bev3dNoZ0Z80qr5gK4="
+              }
+            },
+            "last_commit_hash": "Rd7tjhOw2/sfKoVzNCEeumQzRV9xaMJKk6Dck8mbIUc=",
+            "data_hash": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+            "validators_hash": "dhhW9izlMEmrDgGZmRqpyJwWZe/om3kR8yDJ60Ftx2E=",
+            "next_validators_hash": "dhhW9izlMEmrDgGZmRqpyJwWZe/om3kR8yDJ60Ftx2E=",
+            "consensus_hash": "urUEHRYkbidX2xevS1X6r7/YZg9+syhxyZ+R0OWNW/I=",
+            "app_hash": "/QZ/lauI64bj/k30A+hedX0VLfuLY8KcKukOp1beMBQ=",
+            "last_results_hash": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+            "evidence_hash": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+            "proposer_address": "mCOESH9Z7sMiVKpQJYWxZFMveFY="
+          },
+          "data": {
+            "txs": []
+          },
+          "evidence": {
+            "evidence": []
+          },
+          "last_commit": {
+            "height": "5380383",
+            "round": 0,
+            "block_id": {
+              "hash": "CiAUlZqz8T0ietSg44aGfcqRNK9z2n1aLL+93PgBTbs=",
+              "part_set_header": {
+                "total": 1,
+                "hash": "/AeiLqHVsvvfTUpFpTMuYZNW+Bev3dNoZ0Z80qr5gK4="
+              }
+            },
+            "signatures": [
+              {
+                "block_id_flag": "BLOCK_ID_FLAG_COMMIT",
+                "validator_address": "0YOGZNalwklL1vU4pUA8ZFcPlE0=",
+                "timestamp": "2026-11-18T03:55:52.753332136Z",
+                "signature": "FvdGHPe6yrrMolWsiyzrJl1jr41Ad0vA+J3XPOwCFJ3Z+NLmaxPXxZ/36stwx+WxqhTlqTFeHA5kkpZpednvDw=="
+              },
+              {
+                "block_id_flag": "BLOCK_ID_FLAG_COMMIT",
+                "validator_address": "BpvsxkQ7Bqh5xhGHLvtUE3mfW4U=",
+                "timestamp": "2026-11-18T03:55:52.753524826Z",
+                "signature": "rXWz4l8ANhmGmUJcolM3WdZBB2b45wWACCbOPK9foCR9/CdkwaLbEbVUbmIHgKH5UQRJUSBgK4W/f1Hf0gaUAw=="
+              },
+              {
+                "block_id_flag": "BLOCK_ID_FLAG_COMMIT",
+                "validator_address": "mCOESH9Z7sMiVKpQJYWxZFMveFY=",
+                "timestamp": "2026-11-18T03:55:52.753334604Z",
+                "signature": "a7IoL8A5YfhFVHEmhziPCHpgr1MHTyoFkUZB61P/E+v7SG7ZdJ11CiLrIkADeyqOGQg8HPIirStoc1NhoFwkBA=="
+              },
+              {
+                "block_id_flag": "BLOCK_ID_FLAG_COMMIT",
+                "validator_address": "wvOck7TrRStCihiHkGcnvgiU1K0=",
+                "timestamp": "2026-11-18T03:55:52.753788807Z",
+                "signature": "f0y5YLUPZiICIQHdtcz+Ovuhf+D7pdiGb0vU/iDjFvsu2t8YLLl7cNDMEsNS+nql7rKYic9E2eQW/Ojyps40AA=="
+              }
+            ]
+          }
+        },
+        "sdk_block": {
+          "header": {
+            "version": {
+              "block": "11",
+              "app": "0"
+            },
+            "chain_id": "mechain_400-1",
+            "height": "5380384",
+            "time": "2026-11-18T03:55:52.753334604Z",
+            "last_block_id": {
+              "hash": "CiAUlZqz8T0ietSg44aGfcqRNK9z2n1aLL+93PgBTbs=",
+              "part_set_header": {
+                "total": 1,
+                "hash": "/AeiLqHVsvvfTUpFpTMuYZNW+Bev3dNoZ0Z80qr5gK4="
+              }
+            },
+            "last_commit_hash": "Rd7tjhOw2/sfKoVzNCEeumQzRV9xaMJKk6Dck8mbIUc=",
+            "data_hash": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+            "validators_hash": "dhhW9izlMEmrDgGZmRqpyJwWZe/om3kR8yDJ60Ftx2E=",
+            "next_validators_hash": "dhhW9izlMEmrDgGZmRqpyJwWZe/om3kR8yDJ60Ftx2E=",
+            "consensus_hash": "urUEHRYkbidX2xevS1X6r7/YZg9+syhxyZ+R0OWNW/I=",
+            "app_hash": "/QZ/lauI64bj/k30A+hedX0VLfuLY8KcKukOp1beMBQ=",
+            "last_results_hash": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+            "evidence_hash": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+            "proposer_address": "mevalcons1nq3cgjrlt8hvxgj54fgztpd3v3fj77zkf7vxvn"
+          },
+          "data": {
+            "txs": []
+          },
+          "evidence": {
+            "evidence": []
+          },
+          "last_commit": {
+            "height": "5380383",
+            "round": 0,
+            "block_id": {
+              "hash": "CiAUlZqz8T0ietSg44aGfcqRNK9z2n1aLL+93PgBTbs=",
+              "part_set_header": {
+                "total": 1,
+                "hash": "/AeiLqHVsvvfTUpFpTMuYZNW+Bev3dNoZ0Z80qr5gK4="
+              }
+            },
+            "signatures": [
+              {
+                "block_id_flag": "BLOCK_ID_FLAG_COMMIT",
+                "validator_address": "0YOGZNalwklL1vU4pUA8ZFcPlE0=",
+                "timestamp": "2026-11-18T03:55:52.753332136Z",
+                "signature": "FvdGHPe6yrrMolWsiyzrJl1jr41Ad0vA+J3XPOwCFJ3Z+NLmaxPXxZ/36stwx+WxqhTlqTFeHA5kkpZpednvDw=="
+              },
+              {
+                "block_id_flag": "BLOCK_ID_FLAG_COMMIT",
+                "validator_address": "BpvsxkQ7Bqh5xhGHLvtUE3mfW4U=",
+                "timestamp": "2026-11-18T03:55:52.753524826Z",
+                "signature": "rXWz4l8ANhmGmUJcolM3WdZBB2b45wWACCbOPK9foCR9/CdkwaLbEbVUbmIHgKH5UQRJUSBgK4W/f1Hf0gaUAw=="
+              },
+              {
+                "block_id_flag": "BLOCK_ID_FLAG_COMMIT",
+                "validator_address": "mCOESH9Z7sMiVKpQJYWxZFMveFY=",
+                "timestamp": "2026-11-18T03:55:52.753334604Z",
+                "signature": "a7IoL8A5YfhFVHEmhziPCHpgr1MHTyoFkUZB61P/E+v7SG7ZdJ11CiLrIkADeyqOGQg8HPIirStoc1NhoFwkBA=="
+              },
+              {
+                "block_id_flag": "BLOCK_ID_FLAG_COMMIT",
+                "validator_address": "wvOck7TrRStCihiHkGcnvgiU1K0=",
+                "timestamp": "2026-11-18T03:55:52.753788807Z",
+                "signature": "f0y5YLUPZiICIQHdtcz+Ovuhf+D7pdiGb0vU/iDjFvsu2t8YLLl7cNDMEsNS+nql7rKYic9E2eQW/Ojyps40AA=="
+              }
+            ]
+          }
+        }
+      },
+      "elapsedMs": 5799
+    },
+    {
+      "name": "metadata_at_height",
+      "url": "https://beta-hub-1317.explorer-testnet.me/cosmos/bank/v1beta1/denoms_metadata/umec",
+      "rpcMethod": null,
+      "params": null,
+      "requestHeaders": {
+        "x-cosmos-block-height": "5380384"
+      },
+      "httpStatus": 200,
+      "responseHeaders": {
+        "date": "Wed, 18 Nov 2026 03:57:53 GMT",
+        "content-type": "application/json"
+      },
+      "response": {
+        "metadata": {
+          "description": "Denom metadata for MEC (umec)",
+          "denom_units": [
+            {
+              "denom": "umec",
+              "exponent": 0,
+              "aliases": []
+            },
+            {
+              "denom": "MEC",
+              "exponent": 8,
+              "aliases": []
+            }
+          ],
+          "base": "umec",
+          "display": "MEC",
+          "name": "MEC",
+          "symbol": "MEC",
+          "uri": "",
+          "uri_hash": ""
+        }
+      },
+      "elapsedMs": 5803
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "recordedAtUtc": "2026-11-18T03:55:43.415882+00:00",
+  "source": "https://github.com/openmetaearth/meta-earth-js-sdk/blob/a56f3e936396de8689c2fc8667ad7306765eee9f/src/config/define.ts",
+  "readOnly": true,
+  "transactionsSent": false,
+  "observations": [
+    {
+      "endpoint": "http://118.175.0.249:8545",
+      "method": "eth_chainId",
+      "params": [],
+      "timeoutSeconds": 15,
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "0x190"
+      },
+      "elapsedMs": 6461
+    },
+    {
+      "endpoint": "http://118.175.0.249:8545",
+      "method": "web3_clientVersion",
+      "params": [],
+      "timeoutSeconds": 15,
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "result": "Version dev ()\nCompiled at  using Go go1.24.11 (amd64)"
+      },
+      "elapsedMs": 6458
+    },
+    {
+      "endpoint": "http://118.175.0.249:8545",
+      "method": "eth_blockNumber",
+      "params": [],
+      "timeoutSeconds": 15,
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": "0x52191d"
+      },
+      "elapsedMs": 6459
+    },
+    {
+      "endpoint": "http://118.175.0.249:8545",
+      "method": "net_version",
+      "params": [],
+      "timeoutSeconds": 15,
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "result": "400"
+      },
+      "elapsedMs": 6453
+    },
+    {
+      "endpoint": "http://118.175.0.249:8545",
+      "method": "eth_syncing",
+      "params": [],
+      "timeoutSeconds": 15,
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": false
+      },
+      "elapsedMs": 6453
+    }
+  ]
+}

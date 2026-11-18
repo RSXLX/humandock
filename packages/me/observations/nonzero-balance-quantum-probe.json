@@ -1,0 +1,214 @@
+{
+  "recordedAtUtc": "2026-11-18T04:02:10.093871+00:00",
+  "readOnly": true,
+  "transactionsSent": false,
+  "requestedHeight": 5380384,
+  "scope": "Public testnet system module accounts discovered from /cosmos/auth/v1beta1/module_accounts; these are not user wallets. No identity records queried.",
+  "sourceForkCommit": "08a9eaaee0408f181c8213e7e90846fd068c6327",
+  "accounts": [
+    {
+      "name": "distribution_module",
+      "cosmosAddress": "me1jv65s3grqf6v6jl3dp4t6c9t9rk99cd85vf4tg",
+      "evmAddress": "0x93354845030274cd4bf1686abd60ab28ec52e1a7"
+    },
+    {
+      "name": "fee_collector_module",
+      "cosmosAddress": "me17xpfvakm2amg962yls6f84z3kell8c5lr2wff2",
+      "evmAddress": "0xf1829676db577682e944fc3493d451b67ff3e29f"
+    }
+  ],
+  "observations": [
+    {
+      "name": "distribution_module_mapping",
+      "url": "https://beta-hub-1317.explorer-testnet.me/ethermint/evm/v1/cosmos_account/0x93354845030274cd4bf1686abd60ab28ec52e1a7",
+      "requestHeaders": {
+        "x-cosmos-block-height": "5380384"
+      },
+      "httpStatus": 200,
+      "responseHeaders": {
+        "date": "Wed, 18 Nov 2026 04:02:09 GMT",
+        "content-type": "application/json",
+        "content-length": "99",
+        "grpc-metadata-content-type": "application/grpc+cosmos-sdk-grpc-codec",
+        "grpc-metadata-x-cosmos-block-height": "5380384",
+        "x-server-time": "1794974529",
+        "server": "envoy",
+        "x-frame-options": "SAMEORIGIN",
+        "x-content-type-options": "nosniff",
+        "x-envoy-upstream-service-time": "199",
+        "connection": "close"
+      },
+      "response": {
+        "cosmos_address": "me1jv65s3grqf6v6jl3dp4t6c9t9rk99cd85vf4tg",
+        "sequence": "0",
+        "account_number": "14"
+      },
+      "elapsedSeconds": 8.318
+    },
+    {
+      "name": "distribution_module_bank",
+      "url": "https://beta-hub-1317.explorer-testnet.me/cosmos/bank/v1beta1/balances/me1jv65s3grqf6v6jl3dp4t6c9t9rk99cd85vf4tg/by_denom?denom=umec",
+      "requestHeaders": {
+        "x-cosmos-block-height": "5380384"
+      },
+      "httpStatus": 200,
+      "responseHeaders": {
+        "date": "Wed, 18 Nov 2026 04:02:09 GMT",
+        "content-type": "application/json",
+        "content-length": "41",
+        "grpc-metadata-content-type": "application/grpc+cosmos-sdk-grpc-codec",
+        "grpc-metadata-x-cosmos-block-height": "5380384",
+        "x-server-time": "1794974529",
+        "server": "envoy",
+        "x-frame-options": "SAMEORIGIN",
+        "x-content-type-options": "nosniff",
+        "x-envoy-upstream-service-time": "193",
+        "connection": "close"
+      },
+      "response": {
+        "balance": {
+          "denom": "umec",
+          "amount": "0"
+        }
+      },
+      "elapsedSeconds": 8.311
+    },
+    {
+      "name": "distribution_module_evm",
+      "url": "http://118.175.0.249:8545",
+      "requestHeaders": {},
+      "rpcRequest": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "eth_getBalance",
+        "params": [
+          "0x93354845030274cd4bf1686abd60ab28ec52e1a7",
+          "0x521920"
+        ]
+      },
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "application/json",
+        "vary": "Origin",
+        "date": "Wed, 18 Nov 2026 04:02:07 GMT",
+        "content-length": "40",
+        "x-envoy-upstream-service-time": "699",
+        "server": "envoy",
+        "connection": "close"
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "0x0"
+      },
+      "elapsedSeconds": 6.374
+    },
+    {
+      "name": "fee_collector_module_mapping",
+      "url": "https://beta-hub-1317.explorer-testnet.me/ethermint/evm/v1/cosmos_account/0xf1829676db577682e944fc3493d451b67ff3e29f",
+      "requestHeaders": {
+        "x-cosmos-block-height": "5380384"
+      },
+      "httpStatus": 200,
+      "responseHeaders": {
+        "date": "Wed, 18 Nov 2026 04:02:09 GMT",
+        "content-type": "application/json",
+        "content-length": "99",
+        "grpc-metadata-content-type": "application/grpc+cosmos-sdk-grpc-codec",
+        "grpc-metadata-x-cosmos-block-height": "5380384",
+        "x-server-time": "1794974529",
+        "server": "envoy",
+        "x-frame-options": "SAMEORIGIN",
+        "x-content-type-options": "nosniff",
+        "x-envoy-upstream-service-time": "193",
+        "connection": "close"
+      },
+      "response": {
+        "cosmos_address": "me17xpfvakm2amg962yls6f84z3kell8c5lr2wff2",
+        "sequence": "0",
+        "account_number": "20"
+      },
+      "elapsedSeconds": 8.309
+    },
+    {
+      "name": "fee_collector_module_bank",
+      "url": "https://beta-hub-1317.explorer-testnet.me/cosmos/bank/v1beta1/balances/me17xpfvakm2amg962yls6f84z3kell8c5lr2wff2/by_denom?denom=umec",
+      "requestHeaders": {
+        "x-cosmos-block-height": "5380384"
+      },
+      "httpStatus": 200,
+      "responseHeaders": {
+        "date": "Wed, 18 Nov 2026 04:02:09 GMT",
+        "content-type": "application/json",
+        "content-length": "49",
+        "grpc-metadata-content-type": "application/grpc+cosmos-sdk-grpc-codec",
+        "grpc-metadata-x-cosmos-block-height": "5380384",
+        "x-server-time": "1794974529",
+        "server": "envoy",
+        "x-frame-options": "SAMEORIGIN",
+        "x-content-type-options": "nosniff",
+        "x-envoy-upstream-service-time": "200",
+        "connection": "close"
+      },
+      "response": {
+        "balance": {
+          "denom": "umec",
+          "amount": "237583380"
+        }
+      },
+      "elapsedSeconds": 8.314
+    },
+    {
+      "name": "fee_collector_module_evm",
+      "url": "http://118.175.0.249:8545",
+      "requestHeaders": {},
+      "rpcRequest": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "eth_getBalance",
+        "params": [
+          "0xf1829676db577682e944fc3493d451b67ff3e29f",
+          "0x521920"
+        ]
+      },
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "application/json",
+        "vary": "Origin",
+        "date": "Wed, 18 Nov 2026 04:02:07 GMT",
+        "content-length": "55",
+        "x-envoy-upstream-service-time": "701",
+        "server": "envoy",
+        "connection": "close"
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "0x20f8a840de5dd000"
+      },
+      "elapsedSeconds": 6.371
+    }
+  ],
+  "checks": [
+    {
+      "account": "distribution_module",
+      "bankAtoms": "0",
+      "evmWei": "0",
+      "nonzero": false,
+      "bankResponseHeight": "5380384",
+      "mappingRoundTripMatches": true,
+      "evmWeiEqualsBankAtomsTimes10Pow10": true,
+      "quotient": null
+    },
+    {
+      "account": "fee_collector_module",
+      "bankAtoms": "237583380",
+      "evmWei": "2375833800000000000",
+      "nonzero": true,
+      "bankResponseHeight": "5380384",
+      "mappingRoundTripMatches": true,
+      "evmWeiEqualsBankAtomsTimes10Pow10": true,
+      "quotient": "10000000000"
+    }
+  ]
+}

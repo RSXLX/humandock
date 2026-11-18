@@ -1,0 +1,109 @@
+{
+  "recordedAtUtc": "2026-11-18T04:02:50.478082+00:00",
+  "readOnly": true,
+  "transactionsSent": false,
+  "note": "Read-only public-chain header behavior. Original module-account listing reduced to system fee_collector discovery; no user-wallet data. Both known REST request header forms rejected a future height.",
+  "observations": [
+    {
+      "name": "miner_cosmos",
+      "url": "https://beta-hub-1317.explorer-testnet.me/ethermint/evm/v1/cosmos_account/0xfa494d3b45879b72f2047af883ea2bad15f7ae48",
+      "requestHeaders": {
+        "x-cosmos-block-height": "5380384"
+      },
+      "httpStatus": 200,
+      "responseHeaders": {
+        "date": "Wed, 18 Nov 2026 04:01:17 GMT",
+        "content-type": "application/json",
+        "content-length": "100",
+        "grpc-metadata-content-type": "application/grpc+cosmos-sdk-grpc-codec",
+        "grpc-metadata-x-cosmos-block-height": "5380384",
+        "x-server-time": "1794974477",
+        "server": "envoy",
+        "x-frame-options": "SAMEORIGIN",
+        "x-content-type-options": "nosniff",
+        "x-envoy-upstream-service-time": "687",
+        "connection": "close"
+      },
+      "response": {
+        "cosmos_address": "me1lfy56w69s7dh9usy0tug863t452l0tjg8v6cnn",
+        "sequence": "0",
+        "account_number": "682"
+      }
+    },
+    {
+      "name": "modules",
+      "url": "https://beta-hub-1317.explorer-testnet.me/cosmos/auth/v1beta1/module_accounts",
+      "requestHeaders": {
+        "x-cosmos-block-height": "5380384"
+      },
+      "httpStatus": 200,
+      "responseHeaders": {
+        "date": "Wed, 18 Nov 2026 04:01:17 GMT",
+        "content-type": "application/json",
+        "grpc-metadata-content-type": "application/grpc+cosmos-sdk-grpc-codec",
+        "grpc-metadata-x-cosmos-block-height": "5380384",
+        "x-server-time": "1794974477",
+        "server": "envoy",
+        "x-frame-options": "SAMEORIGIN",
+        "x-content-type-options": "nosniff",
+        "x-envoy-upstream-service-time": "691",
+        "connection": "close",
+        "transfer-encoding": "chunked"
+      },
+      "response": {
+        "accounts": [
+          {
+            "@type": "/cosmos.auth.v1beta1.ModuleAccount",
+            "base_account": {
+              "address": "me17xpfvakm2amg962yls6f84z3kell8c5lr2wff2",
+              "pub_key": null,
+              "account_number": "20",
+              "sequence": "0"
+            },
+            "name": "fee_collector",
+            "permissions": []
+          }
+        ]
+      },
+      "responseReducedToNeededModule": true
+    },
+    {
+      "name": "height_future",
+      "url": "https://beta-hub-1317.explorer-testnet.me/cosmos/bank/v1beta1/denoms_metadata/umec",
+      "requestHeaders": {
+        "x-cosmos-block-height": "999999999"
+      },
+      "httpStatus": 500,
+      "responseHeaders": {
+        "date": "Wed, 18 Nov 2026 04:01:17 GMT",
+        "content-type": "application/json",
+        "trailer": "Grpc-Trailer-Content-Type",
+        "x-server-time": "1794974477",
+        "server": "envoy",
+        "x-envoy-upstream-service-time": "644",
+        "connection": "close",
+        "transfer-encoding": "chunked"
+      },
+      "response": "{\"code\":2,\"message\":\"codespace sdk code 26: invalid height: cannot query with height in the future; please provide a valid height\",\"details\":[]}"
+    },
+    {
+      "name": "height_future_grpc",
+      "url": "https://beta-hub-1317.explorer-testnet.me/cosmos/bank/v1beta1/denoms_metadata/umec",
+      "requestHeaders": {
+        "Grpc-Metadata-X-Cosmos-Block-Height": "999999999"
+      },
+      "httpStatus": 500,
+      "responseHeaders": {
+        "date": "Wed, 18 Nov 2026 04:01:17 GMT",
+        "content-type": "application/json",
+        "trailer": "Grpc-Trailer-Content-Type",
+        "x-server-time": "1794974477",
+        "server": "envoy",
+        "x-envoy-upstream-service-time": "646",
+        "connection": "close",
+        "transfer-encoding": "chunked"
+      },
+      "response": "{\"code\":2,\"message\":\"codespace sdk code 26: invalid height: cannot query with height in the future; please provide a valid height\",\"details\":[]}"
+    }
+  ]
+}
