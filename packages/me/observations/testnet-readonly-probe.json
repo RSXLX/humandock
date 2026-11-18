@@ -1,0 +1,36 @@
+{
+  "recordedAtUtc": "2026-11-18T03:24:08.920967+00:00",
+  "sourceSdkRevision": "a56f3e936396de8689c2fc8667ad7306765eee9f",
+  "endpoint": "http://118.175.0.249:8545",
+  "readOnly": true,
+  "transactionsSent": false,
+  "bankUnitsVerified": false,
+  "contractDeploymentVerified": false,
+  "observations": [
+    {
+      "method": "eth_chainId",
+      "attempt": 1,
+      "timeoutSeconds": 5,
+      "outcome": "TimeoutError",
+      "elapsedMs": 5022
+    },
+    {
+      "method": "eth_blockNumber",
+      "attempt": 1,
+      "httpStatus": 200,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "result": "0x52178d"
+      },
+      "elapsedMs": 1167
+    },
+    {
+      "method": "eth_chainId",
+      "attempt": 2,
+      "errorType": "TimeoutError",
+      "error": "timed out",
+      "elapsedMs": 5015
+    }
+  ]
+}

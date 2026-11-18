@@ -1,0 +1,48 @@
+{
+  "name": "humandock",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/web"
+  ],
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "scripts": {
+    "dev": "node --import tsx scripts/dev.ts",
+    "dev:api": "node --watch --import tsx apps/api/src/index.ts",
+    "dev:web": "npm run dev --workspace apps/web",
+    "build": "npm run contracts:compile && npm run build --workspace apps/web",
+    "typecheck": "tsc --noEmit && npm run typecheck --workspace apps/web",
+    "test": "node --import tsx --test tests/api/*.test.ts tests/domain/*.test.ts",
+    "test:contracts": "node --import tsx --test tests/contracts/*.test.ts",
+    "contracts:compile": "node --import tsx scripts/compile-contracts.ts",
+    "me:preflight": "node --import tsx scripts/me-preflight.ts",
+    "start:api": "node --import tsx apps/api/src/index.ts",
+    "start:web": "npm run start --workspace apps/web",
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.16",
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/rate-limit": "^10.3.0",
+    "@openzeppelin/contracts": "5.4.0",
+    "canonicalize": "^2.1.0",
+    "fastify": "5.12.8",
+    "pg": "^8.16.3",
+    "viem": "2.58.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1",
+    "@types/node": "^24.0.0",
+    "@types/pg": "^8.15.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "ganache": "7.9.2",
+    "solc": "0.8.30",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}
