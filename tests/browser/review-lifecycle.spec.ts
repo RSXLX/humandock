@@ -134,7 +134,11 @@ test('human review, approval integrity, organization isolation, and service sett
     expect(task.report?.checks.every(check => check.result === 'OK')).toBe(true);
     await expect(page.getByText(summary, { exact: true })).toBeVisible();
     await expect(page.getByText('Immutable report', { exact: true })).toBeVisible();
-    await page.screenshot({ path: testInfo.outputPath('reviewed-task.png'), fullPage: true });
+    // Form interactions leave the page scrolled. Start full-page captures at zero
+    // so fixed navigation is anchored to the top of the captured document.
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+    await page.screenshot({ path: testInfo.outputPath('reviewed-task.png'), fullPage: true, animations: 'disabled' });
   });
 
   let approvedVersionId = '';
@@ -232,5 +236,15 @@ test('mobile navigation exposes the explicit unavailable-wallet explanation', as
   await page.getByRole('button', { name: 'Workspace', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'The people behind the work.', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Integration, honestly reported.', exact: true })).toBeVisible();
-  await page.screenshot({ path: testInfo.outputPath('mobile-workspace.png'), fullPage: true });
+  const drawer = page.getByRole('complementary', { name: 'Primary navigation', exact: true });
+  await expect(drawer).not.toHaveClass(/\bopen\b/);
+  // Closing changes the class immediately, but the 200ms transform transition
+  // finishes later. Check its actual edge instead of taking a mid-motion frame.
+  await expect.poll(async () => {
+    const box = await drawer.boundingBox();
+    return box ? box.x + box.width : 0;
+  }).toBeLessThanOrEqual(1);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  await page.screenshot({ path: testInfo.outputPath('mobile-workspace.png'), fullPage: true, animations: 'disabled' });
 });
