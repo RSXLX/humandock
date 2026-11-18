@@ -16,7 +16,7 @@ Checked **2026-11-18 UTC**. This record covers public documentation, pinned offi
 | Is “advanced verification = numeric KYC level 2” established? | Official explorer labels associate level one with real-person authentication and level two with KYC authentication. The faucet has a separate advanced-auth string. | A direct, authoritative mapping to HARBOR's advanced-verification requirement and an authorized wallet fixture remain outstanding. |
 | Did this verify HumanDock's live payment flow? | No. | Deployment, funding, assignment, delivery, split, withdrawal, and reconciliation receipts are still required. |
 
-## 2. Official network configuration and observed responses
+## 2. Official network configuration and observed responses\n\nFor a concise operator-facing endpoint matrix and all public entry links, see [ME RPC and entry points](./me-rpc-entrypoints.md).
 
 ### Testnet endpoints
 
