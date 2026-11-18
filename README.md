@@ -83,6 +83,8 @@ The test suite targets meaningful failure cases: repeated funding and withdrawal
 
 Browser tests are provided for GitHub Actions. They start the API and web app together and walk the brand → reviewer → brand flow. A passing API test is not represented as a passing browser test; see the Actions run for its actual status.
 
+When updating the lockfile, preserve the `optional: true` metadata for Ganache's nested `fsevents` dependency. It is a macOS-only optional package in the upstream shrinkwrap; npm can lose that marker while generating a root lockfile ([npm/cli#7622](https://github.com/npm/cli/issues/7622)). Always check a clean `npm ci` on Linux after dependency changes.
+
 ## ME integration
 
 The implementation references the official JS SDK revision [`a56f3e936396de8689c2fc8667ad7306765eee9f`](https://github.com/openmetaearth/meta-earth-js-sdk/tree/a56f3e936396de8689c2fc8667ad7306765eee9f), ME Hub revision [`1e9eff8a5feae166fe9d72ad4bcc904622b078a1`](https://github.com/openmetaearth/me-hub/tree/1e9eff8a5feae166fe9d72ad4bcc904622b078a1), and the corresponding Ethermint source. No complete unlicensed SDK implementation has been vendored.

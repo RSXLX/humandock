@@ -134,6 +134,7 @@ test('human review, approval integrity, organization isolation, and service sett
     expect(task.report?.checks.every(check => check.result === 'OK')).toBe(true);
     await expect(page.getByText(summary, { exact: true })).toBeVisible();
     await expect(page.getByText('Immutable report', { exact: true })).toBeVisible();
+    await page.screenshot({ path: testInfo.outputPath('reviewed-task.png'), fullPage: true });
   });
 
   let approvedVersionId = '';
@@ -214,7 +215,7 @@ test('human review, approval integrity, organization isolation, and service sett
   expect(pageErrors, 'No uncaught client-side errors during the lifecycle').toEqual([]);
 });
 
-test('mobile navigation exposes the explicit unavailable-wallet explanation', async ({ page }) => {
+test('mobile navigation exposes the explicit unavailable-wallet explanation', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   // An enabled role switch proves the client hydrated and the API readiness check
@@ -231,4 +232,5 @@ test('mobile navigation exposes the explicit unavailable-wallet explanation', as
   await page.getByRole('button', { name: 'Workspace', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'The people behind the work.', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Integration, honestly reported.', exact: true })).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath('mobile-workspace.png'), fullPage: true });
 });
