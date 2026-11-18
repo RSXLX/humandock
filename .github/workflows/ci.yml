@@ -9,6 +9,19 @@ concurrency:
   group: humandock-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run contracts:compile
+      - run: npm run test:contracts
+      - run: npm run test:me
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -23,9 +36,6 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
-      - run: npm run contracts:compile
-      - run: npm run test:contracts
-      - run: npm run test:me
       - run: npm run test:live
       - run: npm run test:wallet
       - run: npm run build

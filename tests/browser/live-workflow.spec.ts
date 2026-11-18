@@ -95,7 +95,16 @@ async function installLocalWallet(page: Page) {
   return {
     calls, broadcasts,
     declineSignature: () => { declineNextSignature = true; },
-    async select(next: 'buyer' | 'reviewer') { account = next === 'buyer' ? buyer : reviewer; await page.evaluate(address => (window as unknown as WalletTestWindow).__humanDockWallet.emit('accountsChanged', [address]), account.address); },
+    async select(next: 'buyer' | 'reviewer') {
+      account = next === 'buyer' ? buyer : reviewer;
+      await page.evaluate(address => (window as unknown as WalletTestWindow).__humanDockWallet.emit('accountsChanged', [address]), account.address);
+      // The provider event returns before React commits its session invalidation
+      // and automatic wallet panel. Wait for that actual UI before signIn decides
+      // whether it needs to click the background connection button.
+      const dialog = page.getByRole('dialog');
+      await expect(dialog.getByRole('heading', { name: 'Connect your workspace wallet.', exact: true })).toBeVisible();
+      await expect(dialog.locator('.wallet-account code')).toHaveText(account.address);
+    },
   };
 }
 
